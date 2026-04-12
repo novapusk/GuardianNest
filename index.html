@@ -1,16 +1,12 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>愛屋及鳥 GuardianNest</title>
-    <!-- Tailwind CSS for styling -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Leaflet CSS for Map -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <!-- FontAwesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
     
     <script>
@@ -76,7 +72,6 @@
 </head>
 <body class="flex flex-col h-screen relative">
 
-    <!-- Header -->
     <header class="bg-nature-green text-white h-16 flex items-center justify-between px-4 shadow-md z-20 relative">
         <div class="flex items-center gap-2">
             <i class="fa-solid fa-house-chimney-window text-xl"></i>
@@ -92,10 +87,8 @@
         </div>
     </header>
 
-    <!-- Map Container -->
     <main id="map" class="flex-grow"></main>
 
-    <!-- Bottom Navigation -->
     <nav class="bg-white h-[60px] border-t border-gray-200 flex justify-around items-center px-2 z-20 relative pb-safe">
         <button class="flex flex-col items-center justify-center w-16 text-nature-green">
             <i class="fa-solid fa-map-location-dot text-xl mb-1"></i>
@@ -111,16 +104,14 @@
         </button>
     </nav>
 
-    <!-- Nest Details Bottom Sheet (Modal) -->
     <div id="bottom-sheet" class="fixed inset-x-0 bottom-[60px] bg-white rounded-t-3xl shadow-[0_-5px_15px_rgba(0,0,0,0.1)] flex flex-col max-h-[85vh] overflow-y-auto">
         
-        <!-- Drag Handle & Header -->
         <div class="sticky top-0 bg-white pt-3 pb-2 px-5 flex flex-col items-center border-b border-gray-100 z-10 rounded-t-3xl" id="sheet-header">
             <div class="w-12 h-1.5 bg-gray-300 rounded-full mb-3 cursor-pointer" onclick="closeModal()"></div>
             <div class="flex justify-between w-full items-center">
                 <div>
-                    <h2 id="modal-title" class="text-xl font-bold text-gray-800">九龍公園 - A區巢箱</h2>
-                    <p id="modal-status" class="text-xs text-nature-green font-medium mt-1"><i class="fa-solid fa-circle-check mr-1"></i> 系統運作正常 · 開放模式</p>
+                    <h2 id="modal-title" class="text-xl font-bold text-gray-800">九龍塘創新中心</h2>
+                    <p id="modal-status" class="text-xs text-nature-green font-medium mt-1"><i class="fa-solid fa-circle-check mr-1"></i> 連線中 · 讀取即時數據</p>
                 </div>
                 <button onclick="closeModal()" class="w-8 h-8 rounded-full bg-gray-100 text-gray-600 flex items-center justify-center hover:bg-gray-200">
                     <i class="fa-solid fa-xmark"></i>
@@ -128,234 +119,106 @@
             </div>
         </div>
 
-        <!-- Scrollable Content -->
         <div class="p-5 flex flex-col gap-5">
             
-            <!-- Live Stream Mockup -->
             <div class="w-full aspect-video rounded-xl overflow-hidden relative video-placeholder shadow-inner">
-                <!-- Simulated Live Feed -->
                 <img src="https://images.unsplash.com/photo-1552728089-57105a8e7ceb?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Nest Cam" class="w-full h-full object-cover opacity-80" />
-                
-                <!-- Overlay Elements -->
                 <div class="absolute top-3 left-3 bg-red-600 text-white text-[10px] font-bold px-2 py-1 rounded-md flex items-center gap-1.5 animate-pulse">
                     <div class="w-1.5 h-1.5 bg-white rounded-full"></div> LIVE
                 </div>
                 <div class="absolute top-3 right-3 bg-black/50 backdrop-blur-sm text-white text-[10px] px-2 py-1 rounded-md" id="live-time">
-                    14:32:05
-                </div>
-                
-                <!-- Shelter Status Overlay (Hidden by default) -->
-                <div id="shelter-overlay" class="absolute inset-0 bg-black/60 backdrop-blur-sm hidden flex-col items-center justify-center text-white">
-                    <i class="fa-solid fa-umbrella text-4xl mb-2 text-blue-300"></i>
-                    <p class="font-bold">惡劣天氣遮蔽模式已啟動</p>
-                    <p class="text-xs opacity-80 mt-1">為鳥類提供防護，鏡頭暫時遮擋</p>
+                    --:--:--
                 </div>
             </div>
 
-            <!-- Stats Grid -->
-            <div class="grid grid-cols-2 gap-3">
-                <!-- Visits -->
-                <div class="bg-nature-light p-3 rounded-xl border border-green-100 flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-full bg-nature-green text-white flex items-center justify-center flex-shrink-0">
-                        <i class="fa-solid fa-dove"></i>
-                    </div>
-                    <div>
-                        <p class="text-xs text-gray-500 mb-0.5">今日造訪</p>
-                        <p class="text-lg font-bold text-gray-800 leading-none" id="modal-visits">24 <span class="text-xs font-normal text-gray-500">次</span></p>
-                    </div>
-                </div>
-                
-                <!-- Species -->
-                <div class="bg-blue-50 p-3 rounded-xl border border-blue-100 flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-full bg-blue-500 text-white flex items-center justify-center flex-shrink-0">
-                        <i class="fa-solid fa-camera-rotate"></i>
-                    </div>
-                    <div>
-                        <p class="text-xs text-gray-500 mb-0.5">最新辨識</p>
-                        <p class="text-sm font-bold text-gray-800 leading-none truncate w-full" id="modal-species">麻雀</p>
-                    </div>
-                </div>
-
-                <!-- Temperature -->
-                <div class="bg-orange-50 p-3 rounded-xl border border-orange-100 flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-full bg-orange-500 text-white flex items-center justify-center flex-shrink-0">
-                        <i class="fa-solid fa-temperature-half"></i>
-                    </div>
-                    <div>
-                        <p class="text-xs text-gray-500 mb-0.5">巢內溫度</p>
-                        <p class="text-lg font-bold text-gray-800 leading-none" id="modal-temp">28.5°C</p>
-                    </div>
-                </div>
-
-                <!-- Humidity -->
-                <div class="bg-cyan-50 p-3 rounded-xl border border-cyan-100 flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-full bg-cyan-500 text-white flex items-center justify-center flex-shrink-0">
-                        <i class="fa-solid fa-droplet"></i>
-                    </div>
-                    <div>
-                        <p class="text-xs text-gray-500 mb-0.5">巢內濕度</p>
-                        <p class="text-lg font-bold text-gray-800 leading-none" id="modal-humidity">72%</p>
-                    </div>
+            <div class="grid grid-cols-2 gap-3" id="thingspeak-grid">
+                <div class="col-span-2 text-center py-4 text-gray-500 text-sm">
+                    <i class="fa-solid fa-spinner fa-spin mr-2"></i>正在載入 ThingSpeak 數據...
                 </div>
             </div>
 
-            <!-- Action Button -->
-            <button class="w-full bg-wood-brown hover:bg-[#654321] text-white py-3 rounded-xl font-bold transition-colors flex justify-center items-center gap-2 shadow-sm">
+            <button class="w-full bg-wood-brown hover:bg-[#654321] text-white py-3 rounded-xl font-bold transition-colors flex justify-center items-center gap-2 shadow-sm mt-2">
                 <i class="fa-solid fa-clock-rotate-left"></i> 查看歷史影像紀錄
             </button>
-            <div class="h-4"></div> <!-- Padding bottom -->
+            <div class="h-4"></div>
         </div>
     </div>
 
-    <!-- Overlay background when modal is open -->
     <div id="backdrop" class="fixed inset-0 bg-black/40 z-40 hidden opacity-0 transition-opacity duration-300" onclick="closeModal()"></div>
 
-    <!-- Leaflet JS -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
-        // --- Mock Data for GuardianNests ---
-        const nestData = [
-            { 
-                id: 1, 
-                name: "九龍公園 - 榕樹林區", 
-                lat: 22.3005, 
-                lng: 114.1700, 
-                visits: 34, 
-                species: "麻雀, 珠頸斑鳩", 
-                temp: "27.2°C", 
-                humidity: "75%", 
-                status: "normal",
-                statusText: "系統運作正常 · 開放模式",
-                image: "https://images.unsplash.com/photo-1552728089-57105a8e7ceb?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-            },
-            { 
-                id: 2, 
-                name: "香港公園 - 觀鳥園外", 
-                lat: 22.2775, 
-                lng: 114.1610, 
-                visits: 56, 
-                species: "紅耳鵯, 鵲鴝", 
-                temp: "26.8°C", 
-                humidity: "78%", 
-                status: "normal",
-                statusText: "系統運作正常 · 開放模式",
-                image: "https://i.imgur.com/DSMQbiO.gif"
-            },
-            { 
-                id: 3, 
-                name: "維多利亞公園 - 湖畔區", 
-                lat: 22.2820, 
-                lng: 114.1880, 
-                visits: 12, 
-                species: "小白鷺", 
-                temp: "29.1°C", 
-                humidity: "85%", 
-                status: "shelter", // Simulated rain/shelter mode
-                statusText: "微型氣候異常 · 遮蔽模式已啟動",
-                image: "https://images.unsplash.com/photo-1542316413-eb04fdb4ea09?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-            },
-            { 
-                id: 4, 
-                name: "香港濕地公園 - 泥灘區", 
-                lat: 22.4680, 
-                lng: 114.0040, 
-                visits: 128, 
-                species: "黑臉琵鷺, 翠鳥", 
-                temp: "25.5°C", 
-                humidity: "82%", 
-                status: "normal",
-                statusText: "系統運作正常 · 開放模式",
-                image: "https://images.unsplash.com/photo-1508204859068-d67bfa3e8784?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-            }
-        ];
+        // --- ThingSpeak Configuration ---
+        const TS_CHANNEL_ID = '3337585';
+        const TS_API_KEY = 'LMX9I1V3P7XDYUEA';
+        const TS_API_URL = `https://api.thingspeak.com/channels/${TS_CHANNEL_ID}/feeds.json?api_key=${TS_API_KEY}&results=1`;
+
+        // --- Single Nest Location (InnoCentre) ---
+        const innoCentre = { 
+            name: "九龍塘創新中心 (InnoCentre)", 
+            lat: 22.3361, 
+            lng: 114.1748 
+        };
 
         // --- Initialize Map ---
-        // Center around Hong Kong
         const map = L.map('map', {
-            zoomControl: false // Hide default zoom for cleaner mobile UI
-        }).setView([22.33, 114.15], 11);
+            zoomControl: false
+        }).setView([innoCentre.lat, innoCentre.lng], 16);
 
-        // Custom Map Style (Light/Nature themed)
         L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+            attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
             subdomains: 'abcd',
             maxZoom: 20
         }).addTo(map);
 
-        // Add custom zoom control to top right
-        L.control.zoom({
-            position: 'topright'
-        }).addTo(map);
+        L.control.zoom({ position: 'topright' }).addTo(map);
 
         // Custom Icon Creation
-        const createCustomIcon = (status) => {
-            const color = status === 'shelter' ? '#3B82F6' : '#4CAF50'; // Blue for shelter, Green for normal
-            const iconHtml = `
-                <div style="position: relative; display: flex; align-items: center; justify-content: center; width: 40px; height: 40px;">
-                    <div class="pulse-marker" style="position: absolute; width: 100%; height: 100%; background: ${color}80;"></div>
-                    <div style="background-color: ${color}; border: 2px solid white; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; z-index: 2; box-shadow: 0 2px 5px rgba(0,0,0,0.3);">
-                        <i class="fa-solid fa-house-chimney-window text-white text-[10px]"></i>
-                    </div>
-                </div>
-            `;
+        const createCustomIcon = () => {
             return L.divIcon({
-                html: iconHtml,
+                html: `
+                    <div style="position: relative; display: flex; align-items: center; justify-content: center; width: 40px; height: 40px;">
+                        <div class="pulse-marker" style="position: absolute; width: 100%; height: 100%; background: #4CAF5080;"></div>
+                        <div style="background-color: #4CAF50; border: 2px solid white; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; z-index: 2; box-shadow: 0 2px 5px rgba(0,0,0,0.3);">
+                            <i class="fa-solid fa-house-chimney-window text-white text-[10px]"></i>
+                        </div>
+                    </div>
+                `,
                 className: 'custom-nest-icon',
                 iconSize: [40, 40],
                 iconAnchor: [20, 20]
             });
         };
 
-        // Add markers to map
-        nestData.forEach(nest => {
-            const marker = L.marker([nest.lat, nest.lng], {
-                icon: createCustomIcon(nest.status)
-            }).addTo(map);
+        // Add Marker
+        const marker = L.marker([innoCentre.lat, innoCentre.lng], {
+            icon: createCustomIcon()
+        }).addTo(map);
 
-            marker.on('click', () => {
-                openModal(nest);
-                // Center map slightly above the marker to accommodate the bottom sheet
-                map.setView([nest.lat - 0.02, nest.lng], 13, {
-                    animate: true,
-                    duration: 0.5
-                });
+        marker.on('click', () => {
+            openModal(innoCentre);
+            fetchThingSpeakData(); // Fetch real data when clicked
+            map.setView([innoCentre.lat - 0.002, innoCentre.lng], 16, {
+                animate: true,
+                duration: 0.5
             });
         });
 
         // --- Bottom Sheet Logic ---
         const bottomSheet = document.getElementById('bottom-sheet');
         const backdrop = document.getElementById('backdrop');
-        const shelterOverlay = document.getElementById('shelter-overlay');
 
         function openModal(data) {
-            // Populate Data
             document.getElementById('modal-title').innerText = data.name;
             
-            const statusEl = document.getElementById('modal-status');
-            if(data.status === 'shelter') {
-                statusEl.innerHTML = `<i class="fa-solid fa-umbrella mr-1"></i> ${data.statusText}`;
-                statusEl.className = "text-xs text-blue-600 font-medium mt-1";
-                shelterOverlay.classList.remove('hidden');
-                shelterOverlay.classList.add('flex');
-            } else {
-                statusEl.innerHTML = `<i class="fa-solid fa-circle-check mr-1"></i> ${data.statusText}`;
-                statusEl.className = "text-xs text-nature-green font-medium mt-1";
-                shelterOverlay.classList.add('hidden');
-                shelterOverlay.classList.remove('flex');
-            }
+            // Reset Grid state
+            document.getElementById('thingspeak-grid').innerHTML = `
+                <div class="col-span-2 text-center py-4 text-gray-500 text-sm">
+                    <i class="fa-solid fa-spinner fa-spin mr-2"></i>正在載入即時數據...
+                </div>
+            `;
 
-            document.getElementById('modal-visits').innerHTML = `${data.visits} <span class="text-xs font-normal text-gray-500">次</span>`;
-            document.getElementById('modal-species').innerText = data.species;
-            document.getElementById('modal-temp').innerText = data.temp;
-            document.getElementById('modal-humidity').innerText = data.humidity;
-            
-            // Update Image
-            const imgEl = document.querySelector('.video-placeholder img');
-            imgEl.src = data.image;
-
-            // Show UI
             backdrop.classList.remove('hidden');
-            // Small delay to allow display:block to apply before changing opacity for transition
             setTimeout(() => {
                 backdrop.classList.remove('opacity-0');
                 bottomSheet.classList.add('open');
@@ -365,10 +228,67 @@
         function closeModal() {
             bottomSheet.classList.remove('open');
             backdrop.classList.add('opacity-0');
-            
-            setTimeout(() => {
-                backdrop.classList.add('hidden');
-            }, 300); // match transition duration
+            setTimeout(() => { backdrop.classList.add('hidden'); }, 300);
+        }
+
+        // --- Fetch & Display ThingSpeak Data ---
+        async function fetchThingSpeakData() {
+            try {
+                const response = await fetch(TS_API_URL);
+                const data = await response.json();
+                
+                const channel = data.channel;
+                const feed = data.feeds[0]; // Get latest record
+                
+                let gridHTML = '';
+                const colors = [
+                    { bg: 'bg-orange-50', border: 'border-orange-100', iconBg: 'bg-orange-500', icon: 'fa-temperature-half' },
+                    { bg: 'bg-cyan-50', border: 'border-cyan-100', iconBg: 'bg-cyan-500', icon: 'fa-droplet' },
+                    { bg: 'bg-blue-50', border: 'border-blue-100', iconBg: 'bg-blue-500', icon: 'fa-wind' },
+                    { bg: 'bg-nature-light', border: 'border-green-100', iconBg: 'bg-nature-green', icon: 'fa-leaf' }
+                ];
+
+                let colorIndex = 0;
+
+                // Loop through fields 1 to 8 dynamically based on API response
+                for (let i = 1; i <= 8; i++) {
+                    const fieldName = channel[`field${i}`];
+                    const fieldValue = feed ? feed[`field${i}`] : null;
+
+                    if (fieldName) {
+                        const style = colors[colorIndex % colors.length];
+                        const valDisplay = (fieldValue !== null && fieldValue !== "") ? fieldValue : "無數據";
+                        
+                        gridHTML += `
+                            <div class="${style.bg} p-3 rounded-xl border ${style.border} flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-full ${style.iconBg} text-white flex items-center justify-center flex-shrink-0">
+                                    <i class="fa-solid ${style.icon}"></i>
+                                </div>
+                                <div>
+                                    <p class="text-xs text-gray-500 mb-0.5">${fieldName}</p>
+                                    <p class="text-lg font-bold text-gray-800 leading-none">${valDisplay}</p>
+                                </div>
+                            </div>
+                        `;
+                        colorIndex++;
+                    }
+                }
+
+                if(gridHTML === '') {
+                    gridHTML = '<div class="col-span-2 text-center text-sm text-gray-500">此頻道尚未設定任何欄位</div>';
+                }
+
+                document.getElementById('thingspeak-grid').innerHTML = gridHTML;
+                document.getElementById('modal-status').innerHTML = `<i class="fa-solid fa-circle-check mr-1"></i> 系統運作正常 · 更新時間: ${new Date(feed.created_at).toLocaleTimeString()}`;
+
+            } catch (error) {
+                console.error("Error fetching ThingSpeak data:", error);
+                document.getElementById('thingspeak-grid').innerHTML = `
+                    <div class="col-span-2 text-center py-4 text-red-500 text-sm">
+                        <i class="fa-solid fa-triangle-exclamation mr-2"></i>無法取得 ThingSpeak 數據
+                    </div>
+                `;
+            }
         }
 
         // Live Timer Update Simulation
@@ -378,10 +298,7 @@
             document.getElementById('live-time').innerText = timeStr;
         }, 1000);
 
-        // Ensure map resizes correctly on load
-        setTimeout(() => {
-            map.invalidateSize();
-        }, 100);
+        setTimeout(() => { map.invalidateSize(); }, 100);
 
     </script>
 </body>
