@@ -63,11 +63,6 @@
             70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(76, 175, 80, 0); }
             100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(76, 175, 80, 0); }
         }
-
-        /* Video Placeholder Gradient */
-        .video-placeholder {
-            background: linear-gradient(135deg, #1a1a1a 0%, #3a3a3a 100%);
-        }
     </style>
 </head>
 <body class="flex flex-col h-screen relative">
@@ -110,7 +105,7 @@
             <div class="w-12 h-1.5 bg-gray-300 rounded-full mb-3 cursor-pointer" onclick="closeModal()"></div>
             <div class="flex justify-between w-full items-center">
                 <div>
-                    <h2 id="modal-title" class="text-xl font-bold text-gray-800">九龍塘創新中心</h2>
+                    <h2 id="modal-title" class="text-xl font-bold text-gray-800">麗港城商場</h2>
                     <p id="modal-status" class="text-xs text-nature-green font-medium mt-1"><i class="fa-solid fa-circle-check mr-1"></i> 連線中 · 讀取即時數據</p>
                 </div>
                 <button onclick="closeModal()" class="w-8 h-8 rounded-full bg-gray-100 text-gray-600 flex items-center justify-center hover:bg-gray-200">
@@ -121,8 +116,10 @@
 
         <div class="p-5 flex flex-col gap-5">
             
-            <div class="w-full aspect-video rounded-xl overflow-hidden relative video-placeholder shadow-inner">
-                <img src="https://images.unsplash.com/photo-1552728089-57105a8e7ceb?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Nest Cam" class="w-full h-full object-cover opacity-80" />
+            <!-- WebRTC Stream Injection -->
+            <div class="w-full aspect-video rounded-xl overflow-hidden relative shadow-inner bg-black">
+                <iframe src="http://10.93.164.19" class="w-full h-full border-0 pointer-events-none" allow="autoplay; fullscreen"></iframe>
+                
                 <div class="absolute top-3 left-3 bg-red-600 text-white text-[10px] font-bold px-2 py-1 rounded-md flex items-center gap-1.5 animate-pulse">
                     <div class="w-1.5 h-1.5 bg-white rounded-full"></div> LIVE
                 </div>
@@ -153,17 +150,17 @@
         const TS_API_KEY = 'LMX9I1V3P7XDYUEA';
         const TS_API_URL = `https://api.thingspeak.com/channels/${TS_CHANNEL_ID}/feeds.json?api_key=${TS_API_KEY}&results=1`;
 
-        // --- Single Nest Location (InnoCentre) ---
-        const innoCentre = { 
-            name: "九龍塘創新中心 (InnoCentre)", 
-            lat: 22.3361, 
-            lng: 114.1748 
+        // --- Single Nest Location (Laguna Plaza) ---
+        const lagunaPlaza = { 
+            name: "麗港城商場 (Laguna Plaza)", 
+            lat: 22.3066, 
+            lng: 114.2278 
         };
 
         // --- Initialize Map ---
         const map = L.map('map', {
             zoomControl: false
-        }).setView([innoCentre.lat, innoCentre.lng], 16);
+        }).setView([lagunaPlaza.lat, lagunaPlaza.lng], 16);
 
         L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
             attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
@@ -191,14 +188,14 @@
         };
 
         // Add Marker
-        const marker = L.marker([innoCentre.lat, innoCentre.lng], {
+        const marker = L.marker([lagunaPlaza.lat, lagunaPlaza.lng], {
             icon: createCustomIcon()
         }).addTo(map);
 
         marker.on('click', () => {
-            openModal(innoCentre);
+            openModal(lagunaPlaza);
             fetchThingSpeakData(); // Fetch real data when clicked
-            map.setView([innoCentre.lat - 0.002, innoCentre.lng], 16, {
+            map.setView([lagunaPlaza.lat - 0.002, lagunaPlaza.lng], 16, {
                 animate: true,
                 duration: 0.5
             });
