@@ -118,12 +118,14 @@
             
             <!-- WebRTC Stream Injection -->
             <div class="w-full aspect-video rounded-xl overflow-hidden relative shadow-inner bg-black">
-                <iframe src="http://10.93.164.19" class="w-full h-full border-0 pointer-events-none" allow="autoplay; fullscreen"></iframe>
+                <!-- FIX: Removed 'pointer-events-none' to allow interaction -->
+                <iframe src="http://10.93.164.19" class="w-full h-full border-0" allow="autoplay; fullscreen"></iframe>
                 
-                <div class="absolute top-3 left-3 bg-red-600 text-white text-[10px] font-bold px-2 py-1 rounded-md flex items-center gap-1.5 animate-pulse">
+                <!-- Decorative overlays need pointer-events-none so clicks pass through to the iframe -->
+                <div class="absolute top-3 left-3 bg-red-600 text-white text-[10px] font-bold px-2 py-1 rounded-md flex items-center gap-1.5 animate-pulse pointer-events-none">
                     <div class="w-1.5 h-1.5 bg-white rounded-full"></div> LIVE
                 </div>
-                <div class="absolute top-3 right-3 bg-black/50 backdrop-blur-sm text-white text-[10px] px-2 py-1 rounded-md" id="live-time">
+                <div class="absolute top-3 right-3 bg-black/50 backdrop-blur-sm text-white text-[10px] px-2 py-1 rounded-md pointer-events-none" id="live-time">
                     --:--:--
                 </div>
             </div>
