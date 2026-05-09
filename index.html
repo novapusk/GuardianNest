@@ -118,10 +118,8 @@
             
             <!-- WebRTC Stream Injection -->
             <div class="w-full aspect-video rounded-xl overflow-hidden relative shadow-inner bg-black">
-                <!-- FIX: Removed 'pointer-events-none' to allow interaction -->
                 <iframe src="http://10.93.164.19" class="w-full h-full border-0" allow="autoplay; fullscreen"></iframe>
                 
-                <!-- Decorative overlays need pointer-events-none so clicks pass through to the iframe -->
                 <div class="absolute top-3 left-3 bg-red-600 text-white text-[10px] font-bold px-2 py-1 rounded-md flex items-center gap-1.5 animate-pulse pointer-events-none">
                     <div class="w-1.5 h-1.5 bg-white rounded-full"></div> LIVE
                 </div>
@@ -147,6 +145,23 @@
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
+        // --- HuskyLens Class Mapping Dictionary ---
+        const classMap = {
+            "0": "人類",
+            "1": "貓",
+            "2": "烏鴉",
+            "3": "黑鳶",
+            "4": "鷹",
+            "5": "紅隼",
+            "6": "貓頭鷹",
+            "7": "喜鵲",
+            "8": "麻雀",
+            "9": "燕",
+            "10": "中國畫眉",
+            "11": "褐翅鴉鵑",
+            "12": "小葵花鳳頭鸚鵡"
+        };
+
         // --- ThingSpeak Configuration ---
         const TS_CHANNEL_ID = '3337585';
         const TS_API_KEY = 'LMX9I1V3P7XDYUEA';
@@ -256,8 +271,23 @@
 
                     if (fieldName) {
                         const style = colors[colorIndex % colors.length];
-                        const valDisplay = (fieldValue !== null && fieldValue !== "") ? fieldValue : "無數據";
+                        let valDisplay = (fieldValue !== null && fieldValue !== "") ? fieldValue : "無數據";
                         
+                        // ID Translation Logic: Check if field is likely the Class ID
+                        const fieldLower = fieldName.toLowerCase();
+                        if (fieldLower.includes('class') || fieldLower.includes('id') || fieldName.includes('類別') || fieldName.includes('目標') || fieldName.includes('偵測')) {
+                            // Only translate if the ID exists in our map and the value isn't empty
+                            if (fieldValue !== null && fieldValue !== "") {
+                                // Clean any potential whitespace
+                                const cleanValue = String(fieldValue).trim(); 
+                                if (classMap[cleanValue] !== undefined) {
+                                    valDisplay = classMap[cleanValue];
+                                } else {
+                                    valDisplay = `未知 ID: ${cleanValue}`;
+                                }
+                            }
+                        }
+
                         gridHTML += `
                             <div class="${style.bg} p-3 rounded-xl border ${style.border} flex items-center gap-3">
                                 <div class="w-10 h-10 rounded-full ${style.iconBg} text-white flex items-center justify-center flex-shrink-0">
