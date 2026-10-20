@@ -79,31 +79,58 @@
         </div>
     </nav>
 
-    <!-- 主視覺區 Hero Section -->
-    <section class="relative pt-32 pb-24 md:pt-44 md:pb-32 hero-gradient overflow-hidden">
+    <!-- 主視覺區及團隊合照 Hero Section with Team Photo -->
+    <section class="relative pt-28 pb-20 md:pt-36 md:pb-28 hero-gradient overflow-hidden">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <div class="max-w-3xl">
-                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-lingnan-accent text-xs font-medium mb-6">
-                    <span class="w-2 h-2 rounded-full bg-lingnan-accent animate-pulse"></span>
-                    弘基格致 · 服務社群 · 創科領航
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
+                
+                <!-- 左側文字介紹 -->
+                <div class="lg:col-span-7">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-lingnan-accent text-xs font-medium mb-6">
+                        <span class="w-2 h-2 rounded-full bg-lingnan-accent animate-pulse"></span>
+                        弘基格致 · 服務社群 · 創科領航
+                    </div>
+                    <h1 class="text-4xl sm:text-5xl xl:text-6xl font-black tracking-tight leading-tight mb-6">
+                        以科技實踐創意<br>
+                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-red-400 via-sky-300 to-sky-500">
+                            用代碼與硬件改變社區
+                        </span>
+                    </h1>
+                    <p class="text-slate-300 text-base sm:text-lg leading-relaxed mb-8 font-light">
+                        嶺南中學創科隊（Lingnan Secondary School Innovation & Technology Team）致力於融合人工智能（AI）、物聯網（IoT）、機械人工程及立體打印技術，解決日常生活與社區生態的真實難題。
+                    </p>
+                    <div class="flex flex-wrap gap-4">
+                        <a href="#projects" class="px-6 py-3.5 rounded-xl bg-lingnan-red hover:bg-red-800 text-white font-semibold transition flex items-center gap-2 shadow-lg shadow-red-950/50">
+                            探索研發項目 <i class="fa-solid fa-arrow-right text-sm"></i>
+                        </a>
+                        <a href="#domains" class="px-6 py-3.5 rounded-xl glass-card hover:bg-white/10 text-white font-semibold transition">
+                            了解技術領域
+                        </a>
+                    </div>
                 </div>
-                <h1 class="text-4xl sm:text-6xl font-black tracking-tight leading-tight mb-6">
-                    以科技實踐創意<br>
-                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-red-400 via-sky-300 to-sky-500">
-                        用代碼與硬件改變社區
-                    </span>
-                </h1>
-                <p class="text-slate-300 text-lg sm:text-xl leading-relaxed mb-8 font-light">
-                    嶺南中學創科隊（Lingnan Secondary School Innovation & Technology Team）致力於融合人工智能（AI）、物聯網（IoT）、機械人工程及立體打印技術，解決日常生活與社區生態的真實難題。
-                </p>
-                <div class="flex flex-wrap gap-4">
-                    <a href="#projects" class="px-6 py-3.5 rounded-xl bg-lingnan-red hover:bg-red-800 text-white font-semibold transition flex items-center gap-2 shadow-lg shadow-red-950/50">
-                        探索研發項目 <i class="fa-solid fa-arrow-right text-sm"></i>
-                    </a>
-                    <a href="#domains" class="px-6 py-3.5 rounded-xl glass-card hover:bg-white/10 text-white font-semibold transition">
-                        了解技術領域
-                    </a>
+
+                <!-- 右側創科隊合照 (image.jpeg) -->
+                <div class="lg:col-span-5">
+                    <div class="relative group">
+                        <!-- 背後發光裝飾 -->
+                        <div class="absolute -inset-1.5 bg-gradient-to-r from-lingnan-red via-sky-500 to-lingnan-blue rounded-2xl blur-lg opacity-50 group-hover:opacity-80 transition duration-500"></div>
+                        
+                        <!-- 相片外框 -->
+                        <div class="relative glass-card p-2.5 rounded-2xl border border-white/20 shadow-2xl">
+                            <div class="overflow-hidden rounded-xl bg-slate-900">
+                                <img src="image.jpeg" alt="嶺南中學創科隊團隊合照" class="w-full h-auto object-cover max-h-[420px] group-hover:scale-105 transition duration-500">
+                            </div>
+                            <!-- 相片底部圖說 -->
+                            <div class="mt-2.5 px-2 py-1 flex items-center justify-between text-xs text-slate-300">
+                                <span class="font-semibold flex items-center gap-2">
+                                    <i class="fa-solid fa-users text-lingnan-accent"></i> 嶺南中學創科隊成員合照
+                                </span>
+                                <span class="text-slate-400">STREAM I&T Team</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+
             </div>
         </div>
     </section>
